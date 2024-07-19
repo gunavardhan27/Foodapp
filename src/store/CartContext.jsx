@@ -6,6 +6,7 @@ const CartContext = createContext({
     removeItem : (id)=>{}
 })
 function cartReducer(state,action){
+   // console.log(action.id)
     if(action.type === 'ADD_ITEM'){
         const existingCartItemIndex = state.items.find((item)=>item.id === action.item.id)
         //console.log(existingCartItemIndex)
@@ -24,20 +25,24 @@ function cartReducer(state,action){
         return {...state,items:updatedItems}
     }
     if(action.type === 'REMOVE_ITEM'){
-        const existingCartItemIndex = state.items.findOne((item)=>{item.id === action.id})
+        const existingCartItem = state.items.find((item)=>item.id === action.id)
+        
         const updatedItems = [...state.items]
-        if(existingCartItemIndex>-1){
-            if(state.items[existingCartItemIndex].quantity > 1){
+        //console.log(existingCartItem,updatedItems)
+        if(existingCartItem){
+            const cartId = state.items.indexOf(existingCartItem)
+            if(existingCartItem.quantity > 1){
                 const updatedItem = {
-                    ...state.items[existingCartItemIndex],
-                    quantity:state.items[existingCartItemIndex].quantity - 1
+                    ...state.items[cartId],
+                    quantity:state.items[cartId].quantity - 1
                 }
-                updatedItems[existingCartItemIndex] = updatedItem
+                updatedItems[cartId] = updatedItem
             }
             else{
-                updatedItems.splice(existingCartItemIndex,1)
+                updatedItems.splice(existingCartItem,1)
             }
         }
+        //console.log(existingCartItem,updatedItems)
         return {...state,items:updatedItems}
     }
     return state
@@ -57,7 +62,7 @@ export function CartContextProvider({children}){
         dispatchCartAction({type:'REMOVE_ITEM',id:id})
     }
     //syntax of useReducer useReducer(reducer_function,the_state),here the reducer_function is cartReducer
-    console.log(cartContext,'guna-var')
+    //console.log(cartContext,'guna-var')
     return (
         <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
     )

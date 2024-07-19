@@ -1,4 +1,4 @@
-import { createContext, useState, useSyncExternalStore } from "react";
+import { createContext, useState } from "react";
 
 const UserContext = createContext({
     progress : '',
@@ -8,19 +8,7 @@ const UserContext = createContext({
     hideCheckout : ()=>{}
 
 })
-function showModal(){
-    setUserProgress('cart')
-}
-function hideModal(){
-    setUserProgress('')
-}
-function showCheckout(){
-    setUserProgress('checkout')
-}
-function hideCheckout(){
-    setUserProgress('')
-}
-export function UserProgressContext(){
+export function UserProgressContext({children}){
     const [userProgress,setUserProgress] = useState('')
     const userContext = {
         progress : userProgress,
@@ -29,8 +17,21 @@ export function UserProgressContext(){
         showCheckout,
         hideCheckout
     }
+    function showModal(){
+        setUserProgress('cart')
+        }
+        function hideModal(){
+            setUserProgress('')
+        }
+        function showCheckout(){
+            setUserProgress('checkout')
+        }
+        function hideCheckout(){
+            setUserProgress('')
+        }
+        
     return (
-        <UserContext.Provider value={userContext}></UserContext.Provider>
+        <UserContext.Provider value={userContext}>{children}</UserContext.Provider>
     )
 }
 
