@@ -14,6 +14,9 @@ export default function Cart(){
     function handleCloseModal(){
         return userCtx.hideModal()
     }
+    function handleOpenCheckout(){
+        return userCtx.showCheckout()
+    }
     return (
         <Modal open={userCtx.progress==='cart'}>
             <h2>My cart</h2>
@@ -22,7 +25,7 @@ export default function Cart(){
             ))}</ul>
             <p>total price ${totalCost}</p>
             <Button textOnly onClick={handleCloseModal}>Close</Button>
-            {cart.items.length?<Button>Checkout</Button>:''}
+            {cart.items.length?<Button onClick={handleOpenCheckout}>Checkout</Button>:''}
         </Modal>
     )
 }
